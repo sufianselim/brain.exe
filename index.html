@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#05060c" />
+  <meta name="description" content="Brain.exe Has Stopped Working — a 100% scientifically inaccurate brain test. Take the test, get a deeply questionable diagnosis, and share it with your friends." />
+  <title>Brain.exe Has Stopped Working</title>
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Ambient effects -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <canvas id="bgCanvas" class="bg-canvas" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <!-- Navigation -->
+  <header class="nav">
+    <button class="brand" id="brandLogo" type="button" aria-label="Brain.exe logo. Click me five times. Nothing will happen.">
+      <span class="brand-glyph" aria-hidden="true">🧠</span>
+      <span class="brand-text">BRAIN<span class="brand-dot">.</span>EXE</span>
+      <span class="brand-badge">v0.0.1</span>
+    </button>
+
+    <nav class="nav-actions" aria-label="System controls">
+      <button class="nav-btn" id="soundToggle" type="button" aria-pressed="true" aria-label="Toggle sound effects" title="Toggle sound effects">
+        <span class="nav-icon" id="soundIcon" aria-hidden="true">🔊</span>
+        <span class="nav-label" id="soundLabel">SOUND ON</span>
+      </button>
+      <button class="nav-btn" id="historyBtn" type="button" aria-label="View test history" title="View previous test results">
+        <span class="nav-icon" aria-hidden="true">🗂️</span>
+        <span class="nav-label">HISTORY</span>
+      </button>
+      <button class="nav-btn danger" id="resetBtn" type="button" aria-label="Reset all local data" title="Reset all local data">
+        <span class="nav-icon" aria-hidden="true">⟲</span>
+        <span class="nav-label">RESET</span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ============================ HERO ============================ -->
+    <section class="screen active" id="screen-hero" aria-labelledby="heroTitle">
+      <div class="hero">
+        <div class="hero-copy">
+          <p class="status-pill" role="status">
+            <span class="pulse-dot" aria-hidden="true"></span>
+            SYSTEM ONLINE
+            <span class="status-sub" id="sysStatus">calibrating nonsense...</span>
+          </p>
+
+          <h1 class="hero-title glitch" id="heroTitle" data-text="BRAIN.EXE HAS STOPPED WORKING">
+            BRAIN.EXE HAS STOPPED WORKING
+          </h1>
+
+          <p class="hero-sub">
+            We tried to measure your intelligence. Unfortunately, your brain disagreed.
+          </p>
+
+          <div class="hero-cta">
+            <button class="btn primary xl" id="startBtn" type="button">
+              <span class="btn-glyph" aria-hidden="true">▶</span> TEST MY BRAIN
+            </button>
+            <span class="cta-note">12 questions · ∞ regrets</span>
+          </div>
+
+          <p class="disclaimer">* 100% scientifically inaccurate.</p>
+
+          <div class="status-strip" aria-hidden="true">
+            <div class="status-item"><span class="status-key">CPU</span><span class="status-val" id="statCpu">99%</span></div>
+            <div class="status-item"><span class="status-key">COMMON SENSE</span><span class="status-val" id="statSense">SEARCHING…</span></div>
+            <div class="status-item"><span class="status-key">HOPE</span><span class="status-val" id="statHope">LOW</span></div>
+            <div class="status-item"><span class="status-key">THOUGHTS</span><span class="status-val" id="statThoughts">47 OPEN</span></div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="brain-stage" aria-hidden="true">
+            <div class="brain-glow"></div>
+            <div class="ring ring-1"></div>
+            <div class="ring ring-2"></div>
+            <div class="ring ring-3"></div>
+            <div class="orbit orbit-1"><span class="orbit-dot"></span></div>
+            <div class="orbit orbit-2"><span class="orbit-dot"></span></div>
+            <div class="orbit orbit-3"><span class="orbit-dot"></span></div>
+            <div class="brain-emoji">🧠</div>
+            <div class="brain-sweep"></div>
+            <div class="brain-caption">NEURAL CORE // ONLINE</div>
+          </div>
+
+          <div class="terminal hero-terminal" id="heroTerminal" aria-hidden="true">
+            <div class="terminal-bar">
+              <span class="t-dot t-red"></span>
+              <span class="t-dot t-amber"></span>
+              <span class="t-dot t-green"></span>
+              <span class="terminal-title">brain@system:~</span>
+            </div>
+            <div class="terminal-body" id="heroTerminalBody"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ QUIZ ============================ -->
+    <section class="screen" id="screen-quiz" aria-labelledby="questionText">
+      <div class="quiz-wrap">
+        <div class="quiz-head">
+          <div class="quiz-meta">
+            <span class="quiz-counter" id="qCounter">QUESTION 01 / 12</span>
+            <span class="quiz-category" id="qCategory">OVERTHINKING</span>
+          </div>
+          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Test progress" id="quizProgressBar">
+            <div class="progress-fill" id="quizProgress"></div>
+          </div>
+        </div>
+
+        <div class="question-card" id="questionCard" tabindex="-1">
+          <div class="question-index" id="questionIndex" aria-hidden="true">Q.01</div>
+          <h2 class="question-text" id="questionText">Loading question...</h2>
+          <div class="answers" id="answers" role="group" aria-label="Answer choices"></div>
+          <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+
+          <div class="quiz-controls">
+            <button class="btn ghost" id="backBtn" type="button" disabled>← BACK</button>
+            <span class="key-hint" aria-hidden="true">1–4 answer · ← → navigate · Enter continue</span>
+            <button class="btn" id="nextBtn" type="button" disabled>NEXT →</button>
+          </div>
+        </div>
+
+        <p class="quiz-footnote">This is not a psychological test. It is barely a test.</p>
+      </div>
+    </section>
+
+    <!-- ========================== ANALYSIS ========================== -->
+    <section class="screen" id="screen-analysis" aria-label="Brain analysis in progress">
+      <div class="analysis-wrap">
+        <div class="analysis-window">
+          <div class="terminal-bar">
+            <span class="t-dot t-red"></span>
+            <span class="t-dot t-amber"></span>
+            <span class="t-dot t-green"></span>
+            <span class="terminal-title">NEURAL DIAGNOSTIC v0.0.1</span>
+            <span class="terminal-badge">RUNNING</span>
+          </div>
+          <div class="analysis-body" id="analysisLog" role="log" aria-live="polite"></div>
+          <div class="analysis-meter">
+            <div class="progress" id="analysisProgressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Analysis progress">
+              <div class="progress-fill" id="analysisProgress"></div>
+            </div>
+            <span class="analysis-percent" id="analysisPercent">0%</span>
+          </div>
+          <p class="analysis-hint" id="analysisHint">DO NOT CLOSE THIS WINDOW. (You can close this window.)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================== RESULT =========================== -->
+    <section class="screen" id="screen-result" aria-labelledby="resultTitle">
+      <div class="result-wrap">
+        <div class="result-topline">
+          <span class="scan-label"><span class="pulse-dot" aria-hidden="true"></span> DIAGNOSIS COMPLETE</span>
+          <span class="scan-time" id="resultTime"></span>
+        </div>
+
+        <div class="result-card" id="resultCard">
+          <div class="result-visual">
+            <div class="result-glyph-wrap">
+              <div class="result-glyph-ring"></div>
+              <div class="result-glyph" id="resultGlyph" aria-hidden="true">🧠</div>
+            </div>
+            <div class="result-status" id="resultStatus">BRAIN STATUS: CRITICAL</div>
+            <div class="result-id" id="resultId">ID: #000000</div>
+          </div>
+
+          <div class="result-info">
+            <p class="result-kicker">YOUR BRAIN HAS BEEN CLASSIFIED AS</p>
+            <h2 class="result-title glitch" id="resultTitle" data-text="…">…</h2>
+            <p class="result-desc" id="resultDesc"></p>
+            <div class="stats" id="resultStats"></div>
+            <div class="diagnosis-box">
+              <span class="diagnosis-label">DIAGNOSIS:</span>
+              <p class="diagnosis-text" id="resultDiagnosis"></p>
+            </div>
+            <div class="warning-strip" id="resultWarning"></div>
+          </div>
+        </div>
+
+        <p class="fineprint">
+          Entertainment-only scores. Not actual intelligence, medical advice, or a reflection of your worth.
+          (It is a reflection of your tab management, though.)
+        </p>
+
+        <div class="result-actions">
+          <button class="btn primary" id="shareBtn" type="button"><span aria-hidden="true">↗</span> SHARE RESULT</button>
+          <button class="btn" id="downloadBtn" type="button"><span aria-hidden="true">⤓</span> DOWNLOAD RESULT</button>
+          <button class="btn" id="copyBtn" type="button"><span aria-hidden="true">⧉</span> COPY RESULT</button>
+          <button class="btn ghost" id="againBtn" type="button"><span aria-hidden="true">↻</span> TEST AGAIN</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================== HISTORY ========================= -->
+    <section class="screen" id="screen-history" aria-labelledby="historyTitle">
+      <div class="history-wrap">
+        <div class="history-head">
+          <h2 id="historyTitle">TEST HISTORY</h2>
+          <p class="history-sub">Stored locally. Your questionable results never leave this device.</p>
+        </div>
+        <div class="history-list" id="historyList"></div>
+        <div class="history-actions">
+          <button class="btn ghost" id="backHomeBtn" type="button">← BACK TO SYSTEM</button>
+          <button class="btn danger-outline" id="clearHistoryBtn" type="button">CLEAR HISTORY</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© 1998–<span id="year">2026</span> Brain Diagnostics Inc.</span>
+    <span class="footer-sep">·</span>
+    <span>Best viewed with both eyes open.</span>
+    <span class="footer-sep">·</span>
+    <span class="footer-status"><span class="pulse-dot tiny" aria-hidden="true"></span> ALL SYSTEMS QUESTIONABLE</span>
+  </footer>
+
+  <!-- ============================ MODALS =========================== -->
+  <div class="modal" id="shareModal" role="dialog" aria-modal="true" aria-labelledby="shareModalTitle" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card">
+      <div class="modal-bar">
+        <span class="modal-title" id="shareModalTitle">SHARE YOUR DIAGNOSIS</span>
+        <button class="modal-close" type="button" data-close-modal aria-label="Close share dialog">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="share-preview">
+          <img id="sharePreviewImg" alt="Your generated brain result card" />
+        </div>
+        <p class="share-hint" id="shareHint">Copy the text below or download the image, then spread the confusion.</p>
+        <textarea id="shareText" class="share-text" readonly rows="6" aria-label="Shareable result text"></textarea>
+        <div class="modal-actions">
+          <button class="btn primary" id="modalCopyBtn" type="button" data-autofocus>COPY TEXT</button>
+          <button class="btn" id="modalDownloadBtn" type="button">DOWNLOAD IMAGE</button>
+          <button class="btn ghost" id="modalNativeShareBtn" type="button">TRY NATIVE SHARE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="errorModal" role="dialog" aria-modal="true" aria-labelledby="errorTitle" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card error-card">
+      <div class="error-bar">
+        <span class="error-icon" aria-hidden="true">⚠</span>
+        <span class="modal-title" id="errorTitle">brain.exe</span>
+        <button class="modal-close" type="button" data-close-modal aria-label="Close error dialog">✕</button>
+      </div>
+      <div class="error-body">
+        <p class="error-message" id="errorMessage">brain.exe has stopped responding.</p>
+        <p class="error-detail" id="errorDetail">Do you want to keep pretending everything is fine?</p>
+      </div>
+      <div class="modal-actions error-actions">
+        <button class="btn" id="errorRetryBtn" type="button">RETRY</button>
+        <button class="btn primary" id="errorIgnoreBtn" type="button" data-autofocus>IGNORE (RECOMMENDED)</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="secretModal" role="dialog" aria-modal="true" aria-labelledby="secretTitle" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card secret-card">
+      <div class="modal-bar">
+        <span class="modal-title" id="secretTitle">SECRET_UNLOCKED.txt</span>
+        <button class="modal-close" type="button" data-close-modal aria-label="Close secret dialog">✕</button>
+      </div>
+      <div class="modal-body secret-body">
+        <div class="secret-badge" aria-hidden="true">🏆</div>
+        <p class="secret-text">Congratulations! You have successfully wasted 5 seconds of your life.</p>
+        <p class="secret-sub">Achievement unlocked: <strong>Curious Finger</strong></p>
+        <button class="btn primary" type="button" data-close-modal data-autofocus>I REGRET NOTHING</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card confirm-card">
+      <div class="modal-bar">
+        <span class="modal-title" id="confirmTitle">SYSTEM RESET</span>
+        <button class="modal-close" type="button" data-close-modal aria-label="Cancel reset">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="confirm-text" id="confirmText">This will erase your test history and preferences. Your brain will remain unchanged.</p>
+        <div class="modal-actions">
+          <button class="btn ghost" type="button" data-close-modal>CANCEL</button>
+          <button class="btn danger" id="confirmResetBtn" type="button">RESET EVERYTHING</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <noscript>
+    <div class="noscript-note">This brain test requires JavaScript. Which, ironically, is also what your brain requires.</div>
+  </noscript>
+
+  <script src="js/questions.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/effects.js"></script>
+  <script src="js/results.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
